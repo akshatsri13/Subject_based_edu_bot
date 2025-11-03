@@ -1,0 +1,9 @@
+fastapi
+langchain
+langchain_core
+langchain-google-genai
+langchain_community
+uvicorn
+python-dotenv
+sqlite3
+pydantic
