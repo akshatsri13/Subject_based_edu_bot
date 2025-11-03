@@ -59,16 +59,16 @@ llm = ChatGoogleGenerativeAI(
 
 )
 
-# intent_prompt = PromptTemplate(
-#     template="""
-#    Categorize the user's query into one of these catgories:
-#    - history
-#    - science
-#    - maths
-#    - fallback
-#    Just reply with the category name only
-# """
-# )
+intent_prompt = PromptTemplate(
+    template="""
+   Categorize the user's query into one of these catgories:
+   - history
+   - science
+   - maths
+   - fallback
+   Just reply with the category name only
+"""
+)
 
 def classify_intent_llm(query: str):
     intent_temp =f'''
