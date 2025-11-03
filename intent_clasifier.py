@@ -87,6 +87,6 @@ def classify_intent_llm(query: str):
    User query: {query}
     '''
     # prompt = intent_prompt.format(query=intent_temp)
-    print(intent_temp)
+    # print(intent_temp)
     response = llm.invoke(intent_temp)
     return response.content.strip()
