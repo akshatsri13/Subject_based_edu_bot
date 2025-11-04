@@ -1,11 +1,5 @@
 from llm_setup import llm, PromptTemplate
 
-# def handle_fallback(query: str):
-#     prompt = fallback_prompt.format(query=query)
-#     response = llm.invoke(prompt)
-#     return response.content.strip() 
-
-
 
 fallback_prompt = PromptTemplate(
     template=(

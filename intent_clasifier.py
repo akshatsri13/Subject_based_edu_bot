@@ -70,8 +70,6 @@ It should **not attempt to answer** non-educational questions.
 **Response Style:**  
 Be polite, brief, and educational in tone.  
 
-
-
 ---
 
 ### 🧠 INSTRUCTION
@@ -122,16 +120,3 @@ User Query: "{user_query}"
     result = json.loads(raw_output)
     return result
     
-    # result = json.loads(raw_output)
-    # return result
-    
-
-    # try:
-        
-    #     return json.loads(raw_output)
-    # except json.JSONDecodeError:
-        
-    #     return {
-    #         "intent": "fallback",
-    #         "confidence": "low"
-    #     }
