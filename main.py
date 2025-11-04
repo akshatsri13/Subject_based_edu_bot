@@ -50,3 +50,7 @@ def chat(request: QueryRequest):
 def fetch_history():
     chats = get_history()
     return [{"query": q, "intent": i, "response": r} for q,i,r in chats]
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="0.0.0.0", port=10000, reload=True)
