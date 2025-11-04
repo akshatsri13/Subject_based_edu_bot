@@ -6,6 +6,7 @@ from handlers.maths_handler import handle_maths
 from handlers.science_handler import handle_science
 from intent_clasifier import classify_intent_llm     #classify_intent 
 from db import save_chat, get_history
+import json
 
 
 app = FastAPI(title="Subject Based Educational Bot")
@@ -23,7 +24,7 @@ def welcome():
 def chat(request: QueryRequest):
     query = request.query
     intent = classify_intent_llm(query)
-
+    print(intent)
     if intent == "history":
         response = handle_history(query)
 
@@ -36,7 +37,7 @@ def chat(request: QueryRequest):
     else :
         response = handle_fallback(query)
 
-    save_chat(query, intent, response)     
+    save_chat(query, json.dumps(intent), response)     
     return {"intent" : intent, "response" : response}
 
 

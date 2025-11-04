@@ -2,91 +2,137 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import PromptTemplate
 from dotenv import load_dotenv
 import os
+import json
+from llm_setup import llm ,intent_prompt
 
 load_dotenv()
 
 
-llm = ChatGoogleGenerativeAI(
-    model="gemini-2.0-flash-lite",
-    temperature=0.7,
-    api_key=os.environ["GEMINI_API_KEY"]
 
-)
+system_prompt = """
+  **System Prompt:**
 
-intent_prompt = PromptTemplate(
-    template="""
-   You are an intelligent educational assistant designed to classify a user's question
-into a specific academic subject category.
+You are an intelligent intent classification model for an educational chatbot.  
+Your goal is to classify the user’s question into one of the following **main intents**:  
+`maths`, `science`, `history`, or `fallback`.  
 
-Your goal is to determine which of the following categories best fits the user’s query:
-
-1. **history**  
-   - Includes: historical events, timelines, civilizations, empires, wars, leaders, revolutions, ancient cultures, and any inquiry related to the study of the past.  
-   - Example Queries:
-       - "Who was the ruler of the Mughal Empire in the 16th century?"
-       - "When did World War II end?"
-       - "Tell me about the French Revolution."
-   - Counterexamples (not history):
-       - "Explain Newton’s laws of motion." → science  
-       - "Solve 3x + 2 = 11." → maths
-
-2. **science**  
-   - Includes: questions about physical, biological, or chemical principles; scientific processes, inventions, discoveries, and technology-related natural science topics.  
-   - Example Queries:
-       - "What is the chemical formula of water?"
-       - "Explain photosynthesis."
-       - "Why do objects fall to the ground?"
-   - Counterexamples:
-       - "When did Einstein publish the theory of relativity?" → history  
-       - "What is 5% of 200?" → maths
-
-3. **maths**  
-   - Includes: arithmetic, algebra, geometry, trigonometry, calculus, statistics, or any problem requiring numeric reasoning or mathematical operations.  
-   - Example Queries:
-       - "Find the area of a triangle with base 10 and height 5."
-       - "What is 12 divided by 3?"
-       - "Simplify the expression (2x + 3)(x - 4)."
-   - Counterexamples:
-       - "Who invented algebra?" → history  
-       - "What is the speed of light?" → science
-
-4. **fallback**  
-   - Use this category for queries that:
-       - Are conversational or general (e.g., greetings, jokes, opinions).
-       - Are unrelated to the academic subjects listed above.
-       - Contain multiple subjects or unclear intent.
-   - Example Queries:
-       - "How are you?"
-       - "Tell me a fun fact."
-       - "Write a story about a student."
-       - "Compare Newton and Pythagoras." (Ambiguous → fallback)
-
-**Important Instructions:**
-- Reply **only** with the single category name: `history`, `science`, `maths`, or `fallback`.  
-- Do **not** include explanations, punctuation, or additional words.  
-- If the question overlaps multiple categories, choose the one that best matches the **primary educational intent**.  
-- If you are uncertain, default to `fallback`.
+Use the context, examples, and descriptions below to decide the correct intent.
 
 ---
 
-User query: {query}
+### 📘 INTENT DEFINITIONS
 
-Your response (only one of: history / science / maths / fallback):
+#### 🧮 1. Maths
+**Description:** Handles all mathematical topics, calculations, and conceptual explanations.  
+
+**Examples:**
+- Solve 2x + 3 = 7  
+- What is sin(90°)?  
+- Find the mean of 10, 20, and 30  
+- Explain the area of a triangle  
+- What is integration?  
+
+---
+
+#### 🔬 2. Science
+**Description:** Covers all scientific domains — physics, chemistry, and biology.  
+
+**Examples:**
+- What is Newton's first law of motion?  
+- What is an atom?  
+- Explain photosynthesis  
+- What is DNA?  
+- What are acids and bases?  
+
+---
+
+#### 🏛️ 3. History
+**Description:** Handles questions about past events, civilizations, wars, empires, and famous people.  
+
+**Examples:**
+- When did World War II begin?  
+- Who was Ashoka the Great?  
+- What is the Indus Valley Civilization?  
+- Explain the Mughal Empire  
+- Who was Mahatma Gandhi?  
+
+---
+
+#### 💬 4. Fallback  
+**Description:**  
+**Description:**  
+Handles any question that is **not related to Maths, Science, or History**.  
+If the user asks something outside these subjects — such as personal questions, general knowledge, technology, entertainment, or any unrelated topic — this intent should trigger.  
+
+When this intent is detected, the assistant should politely decline and guide the user back to supported topics.  
+It should **not attempt to answer** non-educational questions.  
+
+**Response Style:**  
+Be polite, brief, and educational in tone.  
+Clearly inform the user that you can only answer questions from Maths, Science, or History.
+
+
+---
+
+### 🧠 INSTRUCTION
+
+Analyze the user’s query and return your result **strictly in JSON format**:
+
+
+{
+  "intent": "<main_intent_name>"
+}
+
 """
-)
 
 def classify_intent_llm(query: str):
-    intent_temp =f'''
-    Categorize the user's query into one of these catgories:
-   - history
-   - science
-   - maths
-   - fallback
-   Just reply with the category name only
-   \n
-   User query: {query}
-    '''
-    # prompt = intent_prompt.format(query=intent_temp)
-    # print(intent_temp)
-    response = llm.invoke(intent_temp)
-    return response.content.strip()
+    """
+    Classify user query into intent, and confidence.
+    """
+
+    llm = ChatGoogleGenerativeAI(
+        model="gemini-2.0-flash-lite",
+        temperature=0.4,
+        api_key=os.environ["GEMINI_API_KEY"]
+    )
+
+    intent_prompt = PromptTemplate(
+        input_variables=["system_prompt", "user_query"],
+        template="""
+{system_prompt}
+
+Now analyze the following user query and respond only in JSON format.
+
+User Query: "{user_query}"
+"""
+    )
+
+    final_prompt = intent_prompt.format(
+        system_prompt=system_prompt, 
+        user_query=query
+    )
+
+    response = llm.invoke(final_prompt)
+    raw_output = response.content.strip()
+    print(raw_output)
+
+    if raw_output.startswith("```"):
+        raw_output = raw_output.strip("`").replace("json", "").strip()
+
+    # Convert to dict
+    result = json.loads(raw_output)
+    return result
+    
+    # result = json.loads(raw_output)
+    # return result
+    
+
+    # try:
+        
+    #     return json.loads(raw_output)
+    # except json.JSONDecodeError:
+        
+    #     return {
+    #         "intent": "fallback",
+    #         "confidence": "low"
+    #     }

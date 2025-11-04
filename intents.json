@@ -1,0 +1,60 @@
+{
+  "intents": [
+    {
+      "name": "history_intent",
+      "description": "Handles questions related to historical events, timelines, civilizations, and famous personalities.",
+      "examples": [
+        "Who was Akbar?",
+        "When did World War II end?",
+        "Tell me about the French Revolution.",
+        "Who discovered America?",
+        "Explain the Industrial Revolution.",
+        "What were the causes of World War I?",
+        "Who was Mahatma Gandhi?",
+        "What was the significance of the Renaissance?"
+      ]
+    },
+    {
+      "name": "science_intent",
+      "description": "Covers scientific concepts, principles, discoveries, and real-world applications from physics, chemistry, and biology.",
+      "examples": [
+        "What is photosynthesis?",
+        "Explain Newton's laws of motion.",
+        "Why is the sky blue?",
+        "What is the structure of an atom?",
+        "How does gravity work?",
+        "What are the states of matter?",
+        "Who discovered penicillin?",
+        "What is the difference between speed and velocity?"
+      ]
+    },
+    {
+      "name": "maths_intent",
+      "description": "Deals with mathematical problems, formulas, definitions, and step-by-step problem solving.",
+      "examples": [
+        "What is the Pythagoras theorem?",
+        "Solve 2x + 3 = 9",
+        "How to find the area of a circle?",
+        "Explain the concept of integration.",
+        "What is the value of pi?",
+        "How to calculate simple interest?",
+        "Define mean, median, and mode.",
+        "What are prime numbers?"
+      ]
+    },
+    {
+      "name": "fallback_intent",
+      "description": "Triggered when the user’s question is outside the domains of History, Science, or Mathematics.",
+      "examples": [
+        "Who is the Prime Minister of India?",
+        "Write a poem about rain.",
+        "Tell me a joke.",
+        "What is the best movie of 2024?",
+        "How to cook pasta?",
+        "Who won the FIFA World Cup?",
+        "Give me fitness tips.",
+        "What is the weather today?"
+      ]
+    }
+  ]
+}

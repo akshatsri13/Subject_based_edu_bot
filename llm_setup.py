@@ -11,22 +11,17 @@ llm = ChatGoogleGenerativeAI(
     api_key=os.environ["GEMINI_API_KEY"]
 )
 
-history_prompt = PromptTemplate(
-    template = "You are history expert. Answer this history question briefly and clearly: \n{query}",
-    input_variables=['query']
-)
+intent_prompt = PromptTemplate(
+    template = """
+    You are an intent classifier for a chatbot.
+    You are given a list of intents in JSON format:
+    {context}
 
-science_prompt = PromptTemplate(
-    template = "You are genius science expert. Answer this science questions and doubt briefly and clearly: \n{query}",
-    input_variables=['query']
-)
+    User query: {query}
 
-maths_prompt = PromptTemplate(
-    template = "You are a maths tutor. Answer and solve this maths questions accurately: \n{query}",
-    input_variables=['query']
-)
-
-fallback_prompt = PromptTemplate(
-    template = "You are a general assistant bot. the question is: \n{query}. Give a short and brief answer.",
-    input_variables=['query']
+    Your task:
+    - compare the user query with intent descriptions and examples.
+    Return the **name** of the most relevant intent(e.g. history, science, maths or fallback).
+    - Reply witht the name only, no epxlaination 
+"""
 )
