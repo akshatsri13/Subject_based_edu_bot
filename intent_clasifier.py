@@ -50,6 +50,7 @@ Use the context, examples, and descriptions below to decide the correct intent.
 **Description:** Handles questions about past events, civilizations, wars, empires, and famous people.  
 
 **Examples:**
+- When did World War I begin
 - When did World War II begin?  
 - Who was Ashoka the Great?  
 - What is the Indus Valley Civilization?  
@@ -60,7 +61,6 @@ Use the context, examples, and descriptions below to decide the correct intent.
 
 #### 💬 4. Fallback  
 **Description:**  
-**Description:**  
 Handles any question that is **not related to Maths, Science, or History**.  
 If the user asks something outside these subjects — such as personal questions, general knowledge, technology, entertainment, or any unrelated topic — this intent should trigger.  
 
@@ -69,7 +69,7 @@ It should **not attempt to answer** non-educational questions.
 
 **Response Style:**  
 Be polite, brief, and educational in tone.  
-Clearly inform the user that you can only answer questions from Maths, Science, or History.
+
 
 
 ---
@@ -92,7 +92,7 @@ def classify_intent_llm(query: str):
 
     llm = ChatGoogleGenerativeAI(
         model="gemini-2.0-flash-lite",
-        temperature=0.4,
+        temperature=0.7,
         api_key=os.environ["GEMINI_API_KEY"]
     )
 
@@ -119,7 +119,6 @@ User Query: "{user_query}"
     if raw_output.startswith("```"):
         raw_output = raw_output.strip("`").replace("json", "").strip()
 
-    # Convert to dict
     result = json.loads(raw_output)
     return result
     

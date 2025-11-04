@@ -23,9 +23,11 @@ def welcome():
 @app.post("/chat")
 def chat(request: QueryRequest):
     query = request.query
-    intent = classify_intent_llm(query)
-    print(intent)
+    intent_json = classify_intent_llm(query)
+    intent = intent_json['intent']
+    # print(intent)
     if intent == "history":
+
         response = handle_history(query)
 
     elif intent == "maths":

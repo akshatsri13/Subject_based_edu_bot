@@ -22,6 +22,6 @@ intent_prompt = PromptTemplate(
     Your task:
     - compare the user query with intent descriptions and examples.
     Return the **name** of the most relevant intent(e.g. history, science, maths or fallback).
-    - Reply witht the name only, no epxlaination 
+    - Reply with the name only, no explaination 
 """
 )

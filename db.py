@@ -23,7 +23,6 @@ def save_chat(user_query, intent, bot_response):
 
 def get_history():
     conn = db_connect()
-    
     rows = conn.execute("SELECT user_query, intent, bot_response FROM subject").fetchall()
     conn.close()
     return rows    

@@ -1,13 +1,14 @@
 from llm_setup import llm, PromptTemplate
 
-# def handle_history(query: str):
-#     prompt = history_prompt.format(query=query)
-#     response = llm.invoke(prompt)
-#     return response.content.strip()
-  
 
 history_prompt = PromptTemplate(
-    template="You are a history expert. Answer questions brief and clearly: \n {query}",
+    template=(
+        "You are a knowledgeable and helpful History expert. "
+        "Answer questions clearly, briefly, and accurately. "
+        "Only answer questions related to History — including ancient, medieval, and modern events, civilizations, and leaders. "
+        "If the question is not related to History, politely respond that you can only answer History-related questions.\n\n"
+        "User Query: {query}"
+    ),
     input_variables=['query']
 )
 

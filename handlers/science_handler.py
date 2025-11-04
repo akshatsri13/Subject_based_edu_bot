@@ -1,7 +1,13 @@
 from llm_setup import llm, PromptTemplate
 
 science_prompt = PromptTemplate(
-    template="You are a Science expert. Answer questions brief and clearly: \n {query}",
+    template=(
+        "You are a knowledgeable and helpful Science expert. "
+        "Answer questions clearly, accurately, and concisely. "
+        "You may cover topics from Physics, Chemistry, and Biology, including scientific laws, processes, and concepts. "
+        "If the question is unrelated to Science, politely respond that you can only answer Science-related questions.\n\n"
+        "User Query: {query}"
+    ),
     input_variables=['query']
 )
 

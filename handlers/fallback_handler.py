@@ -10,7 +10,7 @@ from llm_setup import llm, PromptTemplate
 fallback_prompt = PromptTemplate(
     template=(
        """ **Description:**  
-Handles any question that is **not related to Maths, Science, or History**.  
+Handles any question that is not related to Maths, Science, or History**.  
 If the user asks something outside these subjects — such as personal questions, general knowledge, technology, entertainment, or any unrelated topic — this intent should trigger.  
 
 When this intent is detected, the assistant should politely decline and guide the user back to supported topics.  
@@ -18,7 +18,7 @@ It should **not attempt to answer** non-educational questions.
 
 **Response Style:**  
 Be polite, brief, and educational in tone.  
-Clearly inform the user that you can only answer questions from Maths, Science, or History."""
+"""
         "User Query: {query}"
     ),
     input_variables=["query"]
