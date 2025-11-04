@@ -25,18 +25,21 @@ def chat(request: QueryRequest):
     query = request.query
     intent_json = classify_intent_llm(query)
     intent = intent_json['intent']
-    # print(intent)
+    print(intent)
     if intent == "history":
-
+        print("Running history handler")
         response = handle_history(query)
 
     elif intent == "maths":
+        print("Running Maths handler")
         response = handle_maths(query)
 
     elif intent == "science":
+        print("Running Science handler")
         response = handle_science(query)
 
     else :
+        print("Running fallback handler")
         response = handle_fallback(query)
 
     save_chat(query, json.dumps(intent), response)     
