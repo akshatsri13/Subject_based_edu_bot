@@ -6,7 +6,6 @@ from handlers.maths_handler import handle_maths
 from handlers.science_handler import handle_science
 from intent_clasifier import classify_intent_llm     #classify_intent 
 from db import save_chat, get_history
-import json
 
 
 app = FastAPI(title="Subject Based Educational Bot")
@@ -42,7 +41,7 @@ def chat(request: QueryRequest):
         print("Running fallback handler")
         response = handle_fallback(query)
 
-    save_chat(query, json.dumps(intent), response)     
+    save_chat(query, intent, response)     
     return {"intent" : intent, "response" : response}
 
 

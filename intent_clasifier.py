@@ -20,9 +20,9 @@ Use the context, examples, and descriptions below to decide the correct intent.
 
 ---
 
-### 📘 INTENT DEFINITIONS
+###  INTENT DEFINITIONS
 
-#### 🧮 1. Maths
+####  1. Maths
 **Description:** Handles all mathematical topics, calculations, and conceptual explanations.  
 
 **Examples:**
@@ -34,7 +34,7 @@ Use the context, examples, and descriptions below to decide the correct intent.
 
 ---
 
-#### 🔬 2. Science
+####  2. Science
 **Description:** Covers all scientific domains — physics, chemistry, and biology.  
 
 **Examples:**
@@ -46,7 +46,7 @@ Use the context, examples, and descriptions below to decide the correct intent.
 
 ---
 
-#### 🏛️ 3. History
+####  3. History
 **Description:** Handles questions about past events, civilizations, wars, empires, and famous people.  
 
 **Examples:**
@@ -59,7 +59,7 @@ Use the context, examples, and descriptions below to decide the correct intent.
 
 ---
 
-#### 💬 4. Fallback  
+####  4. Fallback  
 **Description:**  
 Handles any question that is **not related to Maths, Science, or History**.  
 If the user asks something outside these subjects — such as personal questions, general knowledge, technology, entertainment, or any unrelated topic — this intent should trigger.  
@@ -72,15 +72,9 @@ Be polite, brief, and educational in tone.
 
 ---
 
-### 🧠 INSTRUCTION
+###  INSTRUCTION
 
 Analyze the user’s query and return your result **strictly in JSON format**:
-
-
-{
-  "intent": "<main_intent_name>"
-}
-
 """
 
 def classify_intent_llm(query: str):
@@ -97,7 +91,7 @@ def classify_intent_llm(query: str):
     intent_prompt = PromptTemplate(
         input_variables=["system_prompt", "user_query"],
         template="""
-{system_prompt}
+{system_prompt}  
 
 Now analyze the following user query and respond only in JSON format.
 
@@ -109,6 +103,7 @@ User Query: "{user_query}"
         system_prompt=system_prompt, 
         user_query=query
     )
+    print(final_prompt)
 
     response = llm.invoke(final_prompt)
     raw_output = response.content.strip()
@@ -119,4 +114,3 @@ User Query: "{user_query}"
 
     result = json.loads(raw_output)
     return result
-    
